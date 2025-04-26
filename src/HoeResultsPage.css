@@ -1,0 +1,159 @@
+/* Set the body or root container to take the full viewport */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;  /* Ensure the entire height is used */
+    width: 100%;  /* Ensure the entire width is used */
+    background-color: #f9f9f9;  /* Grey background for the page */
+    transition: background-color 0.3s, color 0.3s;
+    font-family: Arial, sans-serif;
+}
+
+/* Dark Mode Styles */
+.dark {
+    background-color: #1e1e1e;
+    color: white;
+}
+
+/* Flexbox container styling to center content */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;  /* Center vertically */
+    align-items: center;      /* Center horizontally */
+    height: 100%;             /* Full height of the page */
+    padding: 20px;
+    background-color: transparent;
+}
+
+/* Title styles */
+.results-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Table wrapper */
+.results-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 20px;  /* Ensure some space above the table */
+    max-width: 1000px;  /* Ensure the table doesn’t exceed this width */
+}
+
+/* Table styles */
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Table header and cell styles */
+.results-table th,
+.results-table td {
+    padding: 12px 16px;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Header styling */
+.results-table th {
+    background-color: #28a745;
+    color: white;
+}
+
+/* Dark mode header styling */
+.dark .results-table th {
+    background-color: #388e3c;
+}
+
+/* Hover effect on rows */
+.results-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Dark mode hover effect on rows */
+.dark .results-table tr:hover {
+    background-color: #2a2a2a;
+}
+
+/* Button wrapper */
+.go-back-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+/* Go back button styling */
+.go-back-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+/* Hover effect for button */
+.go-back-button:hover {
+    background-color: #45a049;
+}
+
+/* Responsive behavior: Ensure the content doesn't get too wide */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .results-table th,
+    .results-table td {
+        padding: 8px 12px;
+    }
+
+    .go-back-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+
+.buttons-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: white; /* or dark mode background if needed */
+    z-index: 1000;
+    box-sizing: border-box;
+  }
+  
+  .go-back-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  /* Optional: Add spacing from screen edges */
+  .go-back-button:first-child {
+    margin-left: 20px;
+  }
+  
+  .go-back-button:last-child {
+    margin-right: 20px;
+  }
+  
+  .go-back-button:hover {
+    background-color: #45a049;
+  }
+  
