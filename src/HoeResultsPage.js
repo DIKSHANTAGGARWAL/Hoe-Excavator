@@ -127,6 +127,7 @@ const HoeResultsPage = () => {
                                 <th>Productivity (m³/hr)</th>
                                 <th>Time Required (days)</th>
                                 <th>Cost Required (₹)</th>
+                                <th>Cost Required (₹/m³)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -137,6 +138,7 @@ const HoeResultsPage = () => {
                                     <td>{row.productivity}</td>
                                     <td>{row.timeRequired}</td>
                                     <td>{row.cost}</td>
+                                    <td>{row.cost/(parseFloat(state.quantity) || 1)}</td>
                                 </tr>
                             ))}
                         </tbody>

@@ -12,15 +12,43 @@ const OptimiseHeight = () => {
   const oldEfficiency = parseFloat(state.efficiency) || 1;
   const quantity = parseFloat(state.quantity) || 1;
 
-  const [optimiseHeight, setOptimiseHeight] = useState(null); 
+  const [optimiseHeight, setOptimiseHeight] = useState(null);
   const [optimiseAngle, setOptimiseAngle] = useState(null);
   const [increaseEfficiency, setIncreaseEfficiency] = useState();
   const [newEfficiency, setNewEfficiency] = useState(oldEfficiency);
 
-  
+
   let rows = state.resultsData;
+  // rows = rows.map(item => {
+  //   const originalProductivity = parseFloat(item.productivity)
+
+  //   let newProductivity = originalProductivity;
+
+  //   if (optimiseHeight) {
+  //     newProductivity *= 1 / 0.8;
+  //   }
+  //   if (optimiseAngle) {
+  //     newProductivity *= 1 / 0.8;
+  //   }
+  //   if (increaseEfficiency) {
+  //     newProductivity *= newEfficiency / oldEfficiency;
+  //   }
+
+  //   const timeRequired = Math.ceil(quantity / newProductivity);
+  //   const hireCostPerDay = parseFloat(item.cost) / parseFloat(item.timeRequired); // reverse-calculated
+  //   const cost = hireCostPerDay * Math.ceil(timeRequired / 8);
+
+  //   return {
+  //     ...item,
+  //     productivity: newProductivity.toFixed(2),
+  //     timeRequired: Math.ceil(timeRequired / 8),
+  //     cost: cost.toFixed(0)
+  //   };
+
+  // })
+
   rows = rows.map(item => {
-    const originalProductivity = parseFloat(item.productivity)
+    const originalProductivity = parseFloat(item.productivity);
 
     let newProductivity = originalProductivity;
 
@@ -34,19 +62,26 @@ const OptimiseHeight = () => {
       newProductivity *= newEfficiency / oldEfficiency;
     }
 
-    const timeRequired = Math.ceil(quantity / newProductivity);
+    const timeRequiredOriginal = Math.ceil(quantity / originalProductivity);
+    const timeRequiredOptimised = Math.ceil(quantity / newProductivity);
+
     const hireCostPerDay = parseFloat(item.cost) / parseFloat(item.timeRequired); // reverse-calculated
-    const cost = hireCostPerDay * Math.ceil(timeRequired / 8);
+
+    const costOriginal = hireCostPerDay * Math.ceil(timeRequiredOriginal / 8);
+    const costOptimised = hireCostPerDay * Math.ceil(timeRequiredOptimised / 8);
 
     return {
       ...item,
+      productivityOriginal: originalProductivity.toFixed(2),
       productivity: newProductivity.toFixed(2),
-      timeRequired: Math.ceil(timeRequired / 8),
-      cost: cost.toFixed(0)
+      timeRequiredOriginal: Math.ceil(timeRequiredOriginal / 8),
+      timeRequired: Math.ceil(timeRequiredOptimised / 8),
+      costOriginal: costOriginal.toFixed(0),
+      cost: costOptimised.toFixed(0)
     };
+  });
 
-  })
-       
+
   const preferredRows = rows
     .filter(row => parseFloat(row.timeRequired) <= parseFloat(state.time))
     .sort((a, b) => parseFloat(a.cost) - parseFloat(b.cost));
@@ -132,24 +167,34 @@ const OptimiseHeight = () => {
           <table className="results-table preferred">
             <thead>
               <tr>
-                {/* <th>S.No</th> */}
                 <th>Bucket Capacity (yard³)</th>
-                <th>Productivity (m³/hr)</th>
-                <th>Time Required (days)</th>
-                <th>Cost Required (₹)</th>
+                <th>Productivity<br /><span style={{ fontWeight: 'normal' }}>(m³/hr)</span></th>
+                <th>Optimised Productivity<br /><span style={{ fontWeight: 'normal' }}>(m³/hr)</span></th>
+                <th>Time Required<br /><span style={{ fontWeight: 'normal' }}>(days)</span></th>
+                <th>Optimised Time<br /><span style={{ fontWeight: 'normal' }}>(days)</span></th>
+                <th>Cost<br /><span style={{ fontWeight: 'normal' }}>(₹)</span></th>
+                <th>Optimised Cost<br /><span style={{ fontWeight: 'normal' }}>(₹)</span></th>
+                <th>Cost<br /><span style={{ fontWeight: 'normal' }}>(₹/m³)</span></th>
+                <th>Optimised Cost<br /><span style={{ fontWeight: 'normal' }}>(₹/m³)</span></th>
+                
               </tr>
             </thead>
             <tbody>
               {preferredRows.map((row, index) => (
                 <tr key={index}>
-                  {/* <td>{row.sNo}</td> */}
                   <td>{row.bucketCapacity}</td>
+                  <td>{row.productivityOriginal}</td>
                   <td>{row.productivity}</td>
+                  <td>{row.timeRequiredOriginal}</td>
                   <td>{row.timeRequired}</td>
+                  <td>{row.costOriginal}</td>
                   <td>{row.cost}</td>
+                  <td>{row.costOriginal/(parseFloat(state.quantity) || 1)}</td>
+                  <td>{row.cost/(parseFloat(state.quantity) || 1)}</td>
                 </tr>
               ))}
             </tbody>
+
           </table>
         </div>
       )}
@@ -160,7 +205,7 @@ const OptimiseHeight = () => {
         >
           ← Previous Page
         </button>
-      
+
       </div>
 
 

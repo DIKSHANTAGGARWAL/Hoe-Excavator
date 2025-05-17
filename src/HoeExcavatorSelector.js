@@ -5,7 +5,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 
 const HoeExcavatorSelector = () => {
-  const [quantity, setQuantity] = useState('');
+  // const [quantity, setQuantity] = useState('');
+  const [length, setLength] = useState('');
+  const [width, setWidth] = useState(''); 
+  const [height, setHeight] = useState('');
   const [time, setTime] = useState('');
 
   const [selectedSoil, setSelectedSoil] = useState('');
@@ -40,8 +43,11 @@ const HoeExcavatorSelector = () => {
   useEffect(() => {
     const inputs = localStorage.getItem('hoeExcavatorInputs')
     if (inputs) {
-      const { quantity, time, swellFactor, fillFactor, angle, depth, efficiency, darkMode,hireCosts } = JSON.parse(inputs);
-      setQuantity(quantity || '');
+      const { length,width,height, time, swellFactor, fillFactor, angle, depth, efficiency, darkMode,hireCosts } = JSON.parse(inputs);
+      // setQuantity(quantity || '');
+      setLength(length || '');
+      setWidth(width || '');
+      setHeight(height || '');
       setTime(time || '');
       setSwellFactor(swellFactor || '');
       setFillFactor(fillFactor || '');
@@ -55,12 +61,16 @@ const HoeExcavatorSelector = () => {
   }, [])
 
   const handleAnalyze = () => {
-    if (!quantity || !time || !swellFactor || !angle || !depth || !efficiency) {
+    if (!length||!width||!height || !time || !swellFactor || !angle || !depth || !efficiency) {
       alert('Please fill all fields.');
       return;
     }
+    const quantity = parseFloat(length) * parseFloat(width) * parseFloat(height);
     localStorage.setItem('hoeExcavatorInputs', JSON.stringify({
       quantity,
+      length,
+      width,
+      height,
       time,
       swellFactor,
       fillFactor,
@@ -74,6 +84,9 @@ const HoeExcavatorSelector = () => {
     navigate('/results', {
       state: {
         quantity,
+        length,
+        width,
+        height,
         time,
         swellFactor,
         fillFactor,
@@ -88,7 +101,10 @@ const HoeExcavatorSelector = () => {
 
   const handleClear = () => {
     // Reset all the form values
-    setQuantity('');
+    // setQuantity('');
+    setLength('');
+    setWidth(''); 
+    setHeight('');
     setTime('');
     setSwellFactor('');
     setFillFactor('');
@@ -120,18 +136,44 @@ const HoeExcavatorSelector = () => {
       </button> */}
 
       <div className="form-grid">
+        
+
         <div className="form-group">
-          <label>Total Quantity to be Cut</label>
+          <label>Total Length to be Cut <span>(in m)</span></label>
           <input
             type="number"
-            placeholder="In cubic meters"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
+            placeholder="In meters"
+            value={length}
+            onChange={(e) => setLength(e.target.value)}
+            // onChange={(e) => setQuantity(e.target.value)}
           />
         </div>
 
         <div className="form-group">
-          <label>Total Time Available</label>
+          <label>Total Width to be Cut <span>(in m)</span></label>
+          <input
+            type="number"
+            placeholder="In meters"
+            value={width}
+            onChange={(e) => setWidth(e.target.value)}
+            // onChange={(e) => setLength(e.target.value)}
+            // onChange={(e) => setQuantity(e.target.value)}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Total Height to be Cut <span>(in m)</span></label>
+          <input
+            type="number"
+            placeholder="In meters"
+            value={height}
+            onChange={(e) => setHeight(e.target.value)}
+          />
+        </div>
+        
+
+        <div className="form-group">
+          <label>Total Time Available (in days)</label>
           <input
             type="number"
             placeholder="In days"
@@ -170,7 +212,7 @@ const HoeExcavatorSelector = () => {
         </div>
 
         <div className="form-group">
-          <label>Swing Angle</label>
+          <label>Swing Angle (°)</label>
           <input
             type="number"
             placeholder="In degrees (30–90)"
@@ -186,7 +228,7 @@ const HoeExcavatorSelector = () => {
         </div>
 
         <div className="form-group">
-          <label>Average Depth of Cut</label>
+          <label>Average Depth of Cut (ft)</label>
           <input
             type="number"
             placeholder="In feet (5–40)"
